@@ -24,7 +24,7 @@ class ofApp : public ofBaseApp{
     
     
     void setPostion(int direction);
-    
+    void resetPosition();
     
     ofxSyphonServer mainOutputSyphonServer;
     ofxSyphonServer individualTextureSyphonServer;
@@ -46,5 +46,8 @@ class ofApp : public ofBaseApp{
     ofPoint pointDID[38];
     
     
+    ofShader shaderTop;
+    ofShader shaderSide;
+    ofShader shaderDID;
 
 };

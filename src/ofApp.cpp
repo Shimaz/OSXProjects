@@ -3,6 +3,25 @@
 #define FORWARD 1
 #define BACKWARD 0
 
+#define IMG_TOP_WIDTH 520
+#define IMG_TOP_HEIGHT 280
+
+#define IMG_SIDE_WIDTH 400
+#define IMG_SIDE_HEIGHT 430
+
+#define IMG_DID_WIDTH 1920
+#define IMG_DID_HEIGHT 1080
+
+
+#define SIDE_START_POSITION 1920
+#define SIDE_END_POSITION 3840
+
+
+#define DID_START_POSITION 3840
+#define DID_END_POSITION 5760
+
+
+
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -46,10 +65,17 @@ void ofApp::setup(){
         // Set Initial Positions
         
         pointDID[i].set(3840 + (i * 1920), 0);
+        pointDID[i].z = 10;
         pointTop[i].set(i * 520, 400);
+        pointTop[i].z = 0;
         pointSide[i].set(1920 + (i * 400), 325);
+        pointSide[i].z = 20;
     
     }
+    
+    
+    
+    
     
     
     
@@ -82,29 +108,64 @@ void ofApp::draw(){
     
     ofSetColor(243, 190, 199);
     ofRect(3840, 0, 1920, 1080);
-    
 
     
-    
-//    ofSetColor(255, 255, 255);
-//    
-//    for(int i = 0; i < 12; i++){
-//        
-//        ofCircle(posXX[i], 100, 100);
-//        ofCircle(posXX[i], 500, 100);
-//        ofCircle(posXX[i], 900, 100);
-//    }
-    
+    // draw top images with subsection
     
     for(int i = 0; i < 38; i++){
-    
-        imgTop[i].draw(pointTop[i]);
-        imgSide[i].draw(pointSide[i]);
-        imgDID[i].draw(pointDID[i]);
+        if(pointTop[i].x >= -IMG_TOP_WIDTH && pointTop[i].x <= 1920 - IMG_TOP_WIDTH){
         
-    
+            imgTop[i].draw(pointTop[i]);
+        }
+        else if (pointTop[i].x <= 1920 && pointTop[i].x > 1920 - IMG_TOP_WIDTH){
+            
+            imgTop[i].drawSubsection(pointTop[i].x, pointTop[i].y, 1920 - pointTop[i].x, IMG_TOP_HEIGHT, 0, 0);
+            
+        }
+        
     }
     
+    
+    
+    // draw side images width subsection
+    
+    for (int i = 0; i < 38; i++){
+     
+        if(pointSide[i].x >= SIDE_START_POSITION - IMG_SIDE_WIDTH && pointSide[i].x < SIDE_START_POSITION){ // cliping left side
+        
+            imgSide[i].drawSubsection(SIDE_START_POSITION, pointSide[i].y,
+                                      IMG_SIDE_WIDTH - (SIDE_START_POSITION - pointSide[i].x), IMG_SIDE_HEIGHT,
+                                      (SIDE_START_POSITION - pointSide[i].x), 0);
+            
+        }else if(pointSide[i].x >= SIDE_START_POSITION && pointSide[i].x <= SIDE_END_POSITION - IMG_SIDE_WIDTH){
+        
+            imgSide[i].draw(pointSide[i]);
+        
+        }
+        else if(pointSide[i].x <= SIDE_END_POSITION && pointSide[i].x > SIDE_END_POSITION - IMG_SIDE_WIDTH){ // cliping right side
+            
+            imgSide[i].drawSubsection(pointSide[i].x, pointSide[i].y, SIDE_END_POSITION - pointSide[i].x, IMG_SIDE_HEIGHT, 0, 0);
+            
+        }
+     
+    }
+    
+    
+    // draw did images widh subsection
+    for (int i = 0; i < 38; i++){
+        if(pointDID[i].x >= DID_START_POSITION - IMG_DID_WIDTH && pointDID[i].x < DID_START_POSITION){
+            
+            imgDID[i].drawSubsection(DID_START_POSITION, pointDID[i].y,
+                                     IMG_DID_WIDTH - (DID_START_POSITION - pointDID[i].x), IMG_DID_HEIGHT,
+                                     (DID_START_POSITION - pointDID[i].x), 0);
+            
+        }else if(pointDID[i].x >= DID_START_POSITION && pointDID[i].x <= DID_END_POSITION){
+        
+            imgDID[i].draw(pointDID[i]);
+        }
+     
+        
+    }
     
     
     mClient.draw(50, 50);
@@ -181,14 +242,30 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 //--------------------------------------------------------------
 void ofApp::setPostion(int direction){
     
+    
     switch (direction) {
         case FORWARD:
             
             for (int i = 0; i < 38; i++){
             
-                pointTop[i].x = pointTop[i].x + 5;
-                pointSide[i].x = pointSide[i].x + 5;
-                pointDID[i].x = pointDID[i].x + 5;
+                
+                if (pointTop[i].x >= IMG_TOP_WIDTH * 37) {
+                    pointTop[i].x = -IMG_TOP_WIDTH;
+                }
+                pointTop[i].x = pointTop[i].x + 20;
+                
+                
+                if(pointSide[i].x >= SIDE_START_POSITION + (IMG_SIDE_WIDTH * 37)){
+                    pointSide[i].x = SIDE_START_POSITION - IMG_SIDE_WIDTH;
+                    
+                }
+                pointSide[i].x = pointSide[i].x + 20;
+                
+                
+                if(pointDID[i].x >= DID_START_POSITION + (IMG_DID_WIDTH * 37)){
+                    pointDID[i].x = DID_START_POSITION - IMG_DID_WIDTH;
+                }
+                pointDID[i].x = pointDID[i].x + 20;
             }
             
             break;
@@ -196,9 +273,22 @@ void ofApp::setPostion(int direction){
         case BACKWARD:
             
             for (int i = 0; i < 38; i++){
-                pointTop[i].x = pointTop[i].x - 5;
-                pointSide[i].x = pointSide[i].x - 5;
-                pointDID[i].x = pointDID[i].x - 5;
+                if(pointTop[i].x <= -IMG_TOP_WIDTH){
+                    pointTop[i].x = IMG_TOP_WIDTH * 37;
+                }
+                pointTop[i].x = pointTop[i].x - 20;
+                
+                
+                if (pointSide[i].x <= SIDE_START_POSITION - IMG_SIDE_WIDTH) {
+                    pointSide[i].x = SIDE_START_POSITION + (IMG_SIDE_WIDTH * 37);
+                }
+                pointSide[i].x = pointSide[i].x - 20;
+                
+                
+                if(pointDID[i].x <= DID_START_POSITION - IMG_DID_WIDTH){
+                    pointDID[i].x = DID_START_POSITION + (IMG_DID_WIDTH * 37);
+                }
+                pointDID[i].x = pointDID[i].x - 20;
                 
             }
             
@@ -207,5 +297,23 @@ void ofApp::setPostion(int direction){
         default:
             break;
     }
+    
+    if (pointTop[0].x == 0) {
+        resetPosition();
+    }
 
+}
+
+void ofApp::resetPosition(){
+    
+    for(int i = 0; i < 38; i++){
+        
+        pointDID[i].set(3840 + (i * 1920), 0);
+        pointDID[i].z = 10;
+        pointTop[i].set(i * 520, 400);
+        pointTop[i].z = 0;
+        pointSide[i].set(1920 + (i * 400), 325);
+        pointSide[i].z = 20;
+        
+    }
 }

@@ -21,6 +21,26 @@ void ofApp::setup(){
         posXX[i] = i * 400;
     
     }
+    
+    for(int i = 0; i < 38; i++){
+        
+        
+        string str = "top/" + ofToString(i+1) + ".jpg";
+
+        
+        imgTop[i].loadImage(str);
+        
+        
+        string str2 = "side/" + ofToString(i + 1) + ".jpg";
+
+        
+        imgSide[i].loadImage(str2);
+        
+        
+        string str3 = "did/" + ofToString(i + 1) + ".jpg";
+        
+    }
+    
 }
 
 //--------------------------------------------------------------
@@ -51,15 +71,19 @@ void ofApp::draw(){
     ofSetColor(243, 190, 199);
     ofRect(3840, 0, 1920, 1080);
     
+    ofImage img;
+    img.loadImage("top/1.jpg");
+    img.draw(100, 100);
     
-    ofSetColor(255, 255, 255);
     
-    for(int i = 0; i < 12; i++){
-        
-        ofCircle(posXX[i], 100, 100);
-        ofCircle(posXX[i], 500, 100);
-        ofCircle(posXX[i], 900, 100);
-    }
+//    ofSetColor(255, 255, 255);
+//    
+//    for(int i = 0; i < 12; i++){
+//        
+//        ofCircle(posXX[i], 100, 100);
+//        ofCircle(posXX[i], 500, 100);
+//        ofCircle(posXX[i], 900, 100);
+//    }
     
     
     

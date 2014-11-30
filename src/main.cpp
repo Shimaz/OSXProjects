@@ -6,11 +6,12 @@ int main( ){
     
     ofAppGLFWWindow win;
     win.setMultiDisplayFullscreen(true);
-    
-    
-	ofSetupOpenGL(&win, 5760, 1080,OF_FULLSCREEN);			// <-------- setup the GL context
 
-    ofSetWindowPosition(-1920, 0);
+    
+    
+	ofSetupOpenGL(&win, 5760, 1080, OF_WINDOW);			// <-------- setup the GL context
+
+    ofSetWindowPosition(0, 0);
     
     ofBackground(0, 0, 0);
     

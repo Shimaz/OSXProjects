@@ -33,4 +33,15 @@ class ofApp : public ofBaseApp{
     int posXX[12];
     
     
+    
+    ofImage imgTop[38];
+    ofImage imgSide[38];
+    ofImage imgDID[38];
+    
+    ofPoint pointTop[38];
+    ofPoint pointSide[38];
+    ofPoint pointDID[38];
+    
+    
+
 };

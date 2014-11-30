@@ -23,6 +23,9 @@ class ofApp : public ofBaseApp{
     
     
     
+    void setPostion(int direction);
+    
+    
     ofxSyphonServer mainOutputSyphonServer;
     ofxSyphonServer individualTextureSyphonServer;
     ofxSyphonClient mClient;

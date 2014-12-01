@@ -15,6 +15,7 @@
 		4E0ADB7F1A1B41DA00933D85 /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4E0ADB741A1B41DA00933D85 /* ofxSyphonServer.mm */; };
 		4E0ADB801A1B41DA00933D85 /* ofxSyphonServerDirectory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4E0ADB761A1B41DA00933D85 /* ofxSyphonServerDirectory.mm */; };
 		4E0ADB871A1B5A1000933D85 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4E0ADB681A1B41DA00933D85 /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4ED75CD81A2CFDFA00A3722F /* ofxEasingFunc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4ED75CD61A2CFDFA00A3722F /* ofxEasingFunc.cpp */; };
 		603044E656EA8D499FCF7DEA /* ofxVectorGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 318ABED90EADFB757FFDCCAF /* ofxVectorGraphics.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
@@ -133,6 +134,8 @@
 		4E0ADB741A1B41DA00933D85 /* ofxSyphonServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServer.mm; sourceTree = "<group>"; };
 		4E0ADB751A1B41DA00933D85 /* ofxSyphonServerDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSyphonServerDirectory.h; sourceTree = "<group>"; };
 		4E0ADB761A1B41DA00933D85 /* ofxSyphonServerDirectory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServerDirectory.mm; sourceTree = "<group>"; };
+		4ED75CD61A2CFDFA00A3722F /* ofxEasingFunc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxEasingFunc.cpp; sourceTree = "<group>"; };
+		4ED75CD71A2CFDFA00A3722F /* ofxEasingFunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxEasingFunc.h; sourceTree = "<group>"; };
 		A852AD3A75FDFD790A24855A /* CreEPS.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = CreEPS.hpp; path = ../../../addons/ofxVectorGraphics/libs/CreEPS.hpp; sourceTree = SOURCE_ROOT; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		D4DDC483DAD2C0353077AF28 /* ofxVectorGraphics.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxVectorGraphics.h; path = ../../../addons/ofxVectorGraphics/src/ofxVectorGraphics.h; sourceTree = SOURCE_ROOT; };
@@ -546,6 +549,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				4ED75CD61A2CFDFA00A3722F /* ofxEasingFunc.cpp */,
+				4ED75CD71A2CFDFA00A3722F /* ofxEasingFunc.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
@@ -690,6 +695,7 @@
 				4E0ADB7D1A1B41DA00933D85 /* README.md in Sources */,
 				4E0ADB7C1A1B41DA00933D85 /* SyphonNameboundClient.m in Sources */,
 				4E0ADB7E1A1B41DA00933D85 /* ofxSyphonClient.mm in Sources */,
+				4ED75CD81A2CFDFA00A3722F /* ofxEasingFunc.cpp in Sources */,
 				4E0ADB7F1A1B41DA00933D85 /* ofxSyphonServer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

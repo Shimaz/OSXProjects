@@ -37,13 +37,13 @@ void ofApp::setup(){
     mClient.setServerName("");
     posX = 0;
     
-    
-    for(int i = 0; i < 12; i++){
-
-        
-        posXX[i] = i * 400;
-    
-    }
+//    
+//    for(int i = 0; i < 12; i++){
+//
+//        
+//        posXX[i] = i * 400;
+//    
+//    }
     
     for(int i = 0; i < 38; i++){
         
@@ -66,39 +66,76 @@ void ofApp::setup(){
         
         pointDID[i].set(3840 + (i * 1920), 0);
         pointDID[i].z = 10;
+        
+        rawDID[i].set(3840 + (i * 1920), 0);
+        rawDID[i].z = 10;
+        
         pointTop[i].set(i * 520, 400);
         pointTop[i].z = 0;
+        
+        rawTop[i].set(i * 520, 480);
+        rawTop[i].z = 0;
+        
         pointSide[i].set(1920 + (i * 400), 325);
         pointSide[i].z = 20;
     
+        rawSide[i].set(1920 + (i * 400), 325);
+        rawSide[i].z = 20;
+        
+        
+        
+        
     }
     
     
     
     
-    
-    
+    vid[1].
     
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    if(posX >= 5760) posX = 0;
+//    if(posX >= 5760) posX = 0;
+//    
+//    for(int i = 0; i < 12; i++){
+//        
+//        if(posXX[i] >= 5760) posXX[i] = 0;
+//        
+//        posXX[i] += 8;
+//        
+//    }
+//
+//    float t = ofClamp(ofGetElapsedTimef() / 1pppppppp0, 0, 1);
     
-    for(int i = 0; i < 12; i++){
+    
+    dt = ofClamp((ofGetElapsedTimef() - nowTime) / 1, 0, 1);
+    
+    
+    float v = ofxEasingFunc::Cubic::easeOut(dt);
+    
+    for (int i = 0; i < 38; i++) {
+    
+        pointTop[i].x =  pointTop[i].x + (v * (rawTop[i].x - pointTop[i].x));
+        pointSide[i].x = pointSide[i].x + (v * (rawSide[i].x - pointSide[i].x));
+        pointDID[i].x = pointDID[i].x + (v * (rawDID[i].x - pointDID[i].x));
+
         
-        if(posXX[i] >= 5760) posXX[i] = 0;
-        
-        posXX[i] += 8;
+//        pointTop[i] = rawTop[i];
+//        pointSide[i] = rawSide[i];
+//        pointDID[i] = rawDID[i];
         
     }
-    
+
+    strDebug = ofToString(v) + " " + ofToString(ofGetElapsedTimef() - nowTime) + " " + ofToString(nowTime) + " " + ofToString(ofGetElapsedTimef());
     
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    
+    
     
     ofSetColor(162, 146, 179);
     ofRect(0, 376.5f, 1920, 273);
@@ -115,6 +152,7 @@ void ofApp::draw(){
     for(int i = 0; i < 38; i++){
         if(pointTop[i].x >= -IMG_TOP_WIDTH && pointTop[i].x <= 1920 - IMG_TOP_WIDTH){
         
+            
             imgTop[i].draw(pointTop[i]);
         }
         else if (pointTop[i].x <= 1920 && pointTop[i].x > 1920 - IMG_TOP_WIDTH){
@@ -167,6 +205,18 @@ void ofApp::draw(){
         
     }
     
+    
+//    float t = ofClamp(ofGetElapsedTimef() / 20., 0, 1);
+//    
+//    // all functions take input 0. ~ 1., and outputs 0. ~ 1.
+//    float v = ofxEasingFunc::Cubic::easeOut(t);
+//    
+//    ofCircle(v * ofGetWidth(), v * ofGetHeight(), 10);
+//
+    
+    
+    ofSetColor(255, 0, 0);
+    ofDrawBitmapString(strDebug, 100, 100);
     
     mClient.draw(50, 50);
     mainOutputSyphonServer.publishScreen();
@@ -242,6 +292,8 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 //--------------------------------------------------------------
 void ofApp::setPostion(int direction){
     
+    dt = 0;
+    nowTime = ofGetElapsedTimef();
     
     switch (direction) {
         case FORWARD:
@@ -249,23 +301,23 @@ void ofApp::setPostion(int direction){
             for (int i = 0; i < 38; i++){
             
                 
-                if (pointTop[i].x >= IMG_TOP_WIDTH * 37) {
-                    pointTop[i].x = -IMG_TOP_WIDTH;
+                if (rawTop[i].x >= IMG_TOP_WIDTH * 37) {
+                    rawTop[i].x = -IMG_TOP_WIDTH;
                 }
-                pointTop[i].x = pointTop[i].x + 20;
+                rawTop[i].x = rawTop[i].x + 20;
                 
                 
-                if(pointSide[i].x >= SIDE_START_POSITION + (IMG_SIDE_WIDTH * 37)){
-                    pointSide[i].x = SIDE_START_POSITION - IMG_SIDE_WIDTH;
+                if(rawSide[i].x >= SIDE_START_POSITION + (IMG_SIDE_WIDTH * 37)){
+                    rawSide[i].x = SIDE_START_POSITION - IMG_SIDE_WIDTH;
                     
                 }
-                pointSide[i].x = pointSide[i].x + 20;
+                rawSide[i].x = rawSide[i].x + 20;
                 
                 
-                if(pointDID[i].x >= DID_START_POSITION + (IMG_DID_WIDTH * 37)){
-                    pointDID[i].x = DID_START_POSITION - IMG_DID_WIDTH;
+                if(rawDID[i].x >= DID_START_POSITION + (IMG_DID_WIDTH * 37)){
+                    rawDID[i].x = DID_START_POSITION - IMG_DID_WIDTH;
                 }
-                pointDID[i].x = pointDID[i].x + 20;
+                rawDID[i].x = rawDID[i].x + 20;
             }
             
             break;
@@ -273,22 +325,22 @@ void ofApp::setPostion(int direction){
         case BACKWARD:
             
             for (int i = 0; i < 38; i++){
-                if(pointTop[i].x <= -IMG_TOP_WIDTH){
-                    pointTop[i].x = IMG_TOP_WIDTH * 37;
+                if(rawTop[i].x <= -IMG_TOP_WIDTH){
+                    rawTop[i].x = IMG_TOP_WIDTH * 37;
                 }
-                pointTop[i].x = pointTop[i].x - 20;
+                rawTop[i].x = rawTop[i].x - 20;
                 
                 
-                if (pointSide[i].x <= SIDE_START_POSITION - IMG_SIDE_WIDTH) {
-                    pointSide[i].x = SIDE_START_POSITION + (IMG_SIDE_WIDTH * 37);
+                if (rawSide[i].x <= SIDE_START_POSITION - IMG_SIDE_WIDTH) {
+                    rawSide[i].x = SIDE_START_POSITION + (IMG_SIDE_WIDTH * 37);
                 }
-                pointSide[i].x = pointSide[i].x - 20;
+                rawSide[i].x = rawSide[i].x - 20;
                 
                 
-                if(pointDID[i].x <= DID_START_POSITION - IMG_DID_WIDTH){
-                    pointDID[i].x = DID_START_POSITION + (IMG_DID_WIDTH * 37);
+                if(rawDID[i].x <= DID_START_POSITION - IMG_DID_WIDTH){
+                    rawDID[i].x = DID_START_POSITION + (IMG_DID_WIDTH * 37);
                 }
-                pointDID[i].x = pointDID[i].x - 20;
+                rawDID[i].x = rawDID[i].x - 20;
                 
             }
             
@@ -298,9 +350,9 @@ void ofApp::setPostion(int direction){
             break;
     }
     
-    if (pointTop[0].x == 0) {
-        resetPosition();
-    }
+//    if (pointTop[0].x == 0) {
+//        resetPosition();
+//    }
 
 }
 

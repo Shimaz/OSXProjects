@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxSyphon.h"
+#include "ofxEasingFunc.h"
 
 class ofApp : public ofBaseApp{
 
@@ -33,7 +34,7 @@ class ofApp : public ofBaseApp{
     
     int posX;
     
-    int posXX[12];
+//    int posXX[12];
     
     
     
@@ -45,9 +46,16 @@ class ofApp : public ofBaseApp{
     ofPoint pointSide[38];
     ofPoint pointDID[38];
     
+    ofPoint rawTop[38];
+    ofPoint rawSide[38];
+    ofPoint rawDID[38];
     
-    ofShader shaderTop;
-    ofShader shaderSide;
-    ofShader shaderDID;
+
+    string strDebug;
+    float dt;
+    float nowTime;
+
+    ofVideoPlayer vid[5];
+
 
 };

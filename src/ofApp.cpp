@@ -64,10 +64,15 @@ void ofApp::setup(){
         
         // Set Initial Positions
         
-        pointDID[i].set(3840 + (i * 1920), 0);
-        pointDID[i].z = 10;
+        if (i == 37) {
+            pointDID[i].set(DID_START_POSITION - 1920, 0);
+            rawDID[i].set(DID_START_POSITION - 1920, 0);
+        }else{
+            pointDID[i].set(3840 + (i * 1920), 0);
+            rawDID[i].set(3840 + (i * 1920), 0);
+        }
         
-        rawDID[i].set(3840 + (i * 1920), 0);
+        pointDID[i].z = 10;
         rawDID[i].z = 10;
         
         pointTop[i].set(i * 520, 400);
@@ -90,7 +95,7 @@ void ofApp::setup(){
     
     
     
-    vid[1].
+//    vid[1].set
     
 }
 
@@ -205,14 +210,6 @@ void ofApp::draw(){
         
     }
     
-    
-//    float t = ofClamp(ofGetElapsedTimef() / 20., 0, 1);
-//    
-//    // all functions take input 0. ~ 1., and outputs 0. ~ 1.
-//    float v = ofxEasingFunc::Cubic::easeOut(t);
-//    
-//    ofCircle(v * ofGetWidth(), v * ofGetHeight(), 10);
-//
     
     
     ofSetColor(255, 0, 0);

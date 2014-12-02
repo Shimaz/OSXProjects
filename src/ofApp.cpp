@@ -65,27 +65,37 @@ void ofApp::setup(){
         // Set Initial Positions
         
         if (i == 37) {
-            pointDID[i].set(DID_START_POSITION - 1920, 0);
-            rawDID[i].set(DID_START_POSITION - 1920, 0);
+            pointDID[i].set(DID_START_POSITION - IMG_DID_WIDTH, 0);
+            rawDID[i].set(DID_START_POSITION - IMG_DID_WIDTH, 0);
+        
+            pointTop[i].set(0 - IMG_TOP_WIDTH, 400);
+            rawTop[i].set(0 - IMG_TOP_WIDTH, 400);
+            
+            pointSide[i].set(SIDE_START_POSITION - IMG_SIDE_WIDTH, 325);
+            rawSide[i].set(SIDE_START_POSITION - IMG_SIDE_WIDTH, 325);
+            
         }else{
-            pointDID[i].set(3840 + (i * 1920), 0);
-            rawDID[i].set(3840 + (i * 1920), 0);
+            pointDID[i].set(DID_START_POSITION + (i * IMG_DID_WIDTH), 0);
+            rawDID[i].set(DID_START_POSITION + (i * IMG_DID_WIDTH), 0);
+            
+            pointTop[i].set(i * IMG_TOP_WIDTH, 400);
+            rawTop[i].set(i * IMG_TOP_WIDTH, 400);
+            
+            pointSide[i].set(SIDE_START_POSITION + (i * IMG_SIDE_WIDTH), 325);
+            rawSide[i].set(SIDE_START_POSITION + (i * IMG_SIDE_WIDTH), 325);
+            
         }
         
         pointDID[i].z = 10;
         rawDID[i].z = 10;
         
-        pointTop[i].set(i * 520, 400);
         pointTop[i].z = 0;
-        
-        rawTop[i].set(i * 520, 480);
         rawTop[i].z = 0;
         
-        pointSide[i].set(1920 + (i * 400), 325);
         pointSide[i].z = 20;
-    
-        rawSide[i].set(1920 + (i * 400), 325);
         rawSide[i].z = 20;
+        
+        
         
         
         
@@ -298,21 +308,21 @@ void ofApp::setPostion(int direction){
             for (int i = 0; i < 38; i++){
             
                 
-                if (rawTop[i].x >= IMG_TOP_WIDTH * 37) {
-                    rawTop[i].x = -IMG_TOP_WIDTH;
+                if (rawTop[i].x >= IMG_TOP_WIDTH * 36) {
+                    rawTop[i].x = -(IMG_TOP_WIDTH * 2);
                 }
                 rawTop[i].x = rawTop[i].x + 20;
                 
                 
-                if(rawSide[i].x >= SIDE_START_POSITION + (IMG_SIDE_WIDTH * 37)){
-                    rawSide[i].x = SIDE_START_POSITION - IMG_SIDE_WIDTH;
+                if(rawSide[i].x >= SIDE_START_POSITION + (IMG_SIDE_WIDTH * 36)){
+                    rawSide[i].x = SIDE_START_POSITION - (IMG_SIDE_WIDTH * 2);
                     
                 }
                 rawSide[i].x = rawSide[i].x + 20;
                 
                 
-                if(rawDID[i].x >= DID_START_POSITION + (IMG_DID_WIDTH * 37)){
-                    rawDID[i].x = DID_START_POSITION - IMG_DID_WIDTH;
+                if(rawDID[i].x >= DID_START_POSITION + (IMG_DID_WIDTH * 36)){
+                    rawDID[i].x = DID_START_POSITION - (IMG_DID_WIDTH * 2);
                 }
                 rawDID[i].x = rawDID[i].x + 20;
             }
@@ -322,20 +332,20 @@ void ofApp::setPostion(int direction){
         case BACKWARD:
             
             for (int i = 0; i < 38; i++){
-                if(rawTop[i].x <= -IMG_TOP_WIDTH){
-                    rawTop[i].x = IMG_TOP_WIDTH * 37;
+                if(rawTop[i].x <= -(2 * IMG_TOP_WIDTH)){
+                    rawTop[i].x = IMG_TOP_WIDTH * 36;
                 }
                 rawTop[i].x = rawTop[i].x - 20;
                 
                 
-                if (rawSide[i].x <= SIDE_START_POSITION - IMG_SIDE_WIDTH) {
-                    rawSide[i].x = SIDE_START_POSITION + (IMG_SIDE_WIDTH * 37);
+                if (rawSide[i].x <= SIDE_START_POSITION - (2 * IMG_SIDE_WIDTH)) {
+                    rawSide[i].x = SIDE_START_POSITION + (IMG_SIDE_WIDTH * 36);
                 }
                 rawSide[i].x = rawSide[i].x - 20;
                 
                 
-                if(rawDID[i].x <= DID_START_POSITION - IMG_DID_WIDTH){
-                    rawDID[i].x = DID_START_POSITION + (IMG_DID_WIDTH * 37);
+                if(rawDID[i].x <= DID_START_POSITION - (2 * IMG_DID_WIDTH)){
+                    rawDID[i].x = DID_START_POSITION + (IMG_DID_WIDTH * 36);
                 }
                 rawDID[i].x = rawDID[i].x - 20;
                 

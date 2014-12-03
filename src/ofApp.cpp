@@ -110,7 +110,7 @@ void ofApp::setup(){
     }
     
     isInitial = true;
-    if(isInitial) setInitialPosition(0, 26 * 3 + 18, 0);
+    if(isInitial) setInitialPosition(0, 26 * 3 + 18, 26 * 7 + 4);
     
     
 //    vid[1].set

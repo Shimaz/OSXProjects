@@ -12,7 +12,7 @@ int main( ){
     
 	ofSetupOpenGL(&win, 5760, 1080, OF_FULLSCREEN);			// <-------- setup the GL context
 
-    ofSetWindowPosition(-5670, 0);
+    ofSetWindowPosition(-1920, 0);
     
     ofBackground(0, 0, 0);
     

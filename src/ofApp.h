@@ -44,6 +44,7 @@ class ofApp : public ofBaseApp{
     ofImage imgSide[38];
     ofImage imgDID[38];
     
+    
     ofPoint pointTop[38];
     ofPoint pointSide[38];
     ofPoint pointDID[38];

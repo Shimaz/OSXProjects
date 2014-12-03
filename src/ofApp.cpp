@@ -6,8 +6,8 @@
 #define IMG_TOP_WIDTH 520
 #define IMG_TOP_HEIGHT 280
 
-#define IMG_SIDE_WIDTH 400
-#define IMG_SIDE_HEIGHT 430
+#define IMG_SIDE_WIDTH 556
+#define IMG_SIDE_HEIGHT 648
 
 #define IMG_DID_WIDTH 1920
 #define IMG_DID_HEIGHT 1080
@@ -20,6 +20,8 @@
 #define DID_START_POSITION 3840
 #define DID_END_POSITION 5760
 
+#define SPEED 20
+
 
 
 
@@ -29,7 +31,11 @@ void ofApp::setup(){
     
     ofSetFrameRate(60);
     
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     ofSetCircleResolution(64);
+    
     
     mainOutputSyphonServer.setName("Screen Outputh");
     mClient.setup();
@@ -45,19 +51,21 @@ void ofApp::setup(){
 //    
 //    }
     
+    
     for(int i = 0; i < 38; i++){
         
     
         // Load Images
-        string str = "top/" + ofToString(i+1) + ".jpg";
+        string str = "top/" + ofToString(i+1) + ".png";
+        
         imgTop[i].loadImage(str);
         
         
-        string str2 = "side/" + ofToString(i + 1) + ".jpg";
+        string str2 = "side/" + ofToString(i + 1) + ".png";
         imgSide[i].loadImage(str2);
         
         
-        string str3 = "did/" + ofToString(i + 1) + ".jpg";
+        string str3 = "did/DID_eng_" + ofToString(i + 1) + ".png";
         imgDID[i].loadImage(str3);
                             
     
@@ -68,21 +76,21 @@ void ofApp::setup(){
             pointDID[i].set(DID_START_POSITION - IMG_DID_WIDTH, 0);
             rawDID[i].set(DID_START_POSITION - IMG_DID_WIDTH, 0);
         
-            pointTop[i].set(0 - IMG_TOP_WIDTH, 400);
-            rawTop[i].set(0 - IMG_TOP_WIDTH, 400);
+            pointTop[i].set(0 - IMG_TOP_WIDTH, (ofGetHeight() - IMG_TOP_HEIGHT)/2);
+            rawTop[i].set(0 - IMG_TOP_WIDTH, (ofGetHeight() - IMG_TOP_HEIGHT)/2);
             
-            pointSide[i].set(SIDE_START_POSITION - IMG_SIDE_WIDTH, 325);
-            rawSide[i].set(SIDE_START_POSITION - IMG_SIDE_WIDTH, 325);
+            pointSide[i].set(SIDE_START_POSITION - IMG_SIDE_WIDTH, (ofGetHeight() - IMG_SIDE_HEIGHT)/2);
+            rawSide[i].set(SIDE_START_POSITION - IMG_SIDE_WIDTH, (ofGetHeight() - IMG_SIDE_HEIGHT)/2);
             
         }else{
             pointDID[i].set(DID_START_POSITION + (i * IMG_DID_WIDTH), 0);
             rawDID[i].set(DID_START_POSITION + (i * IMG_DID_WIDTH), 0);
             
-            pointTop[i].set(i * IMG_TOP_WIDTH, 400);
-            rawTop[i].set(i * IMG_TOP_WIDTH, 400);
+            pointTop[i].set(i * IMG_TOP_WIDTH, (ofGetHeight() - IMG_TOP_HEIGHT)/2);
+            rawTop[i].set(i * IMG_TOP_WIDTH, (ofGetHeight() - IMG_TOP_HEIGHT)/2);
             
-            pointSide[i].set(SIDE_START_POSITION + (i * IMG_SIDE_WIDTH), 325);
-            rawSide[i].set(SIDE_START_POSITION + (i * IMG_SIDE_WIDTH), 325);
+            pointSide[i].set(SIDE_START_POSITION + (i * IMG_SIDE_WIDTH), (ofGetHeight() - IMG_SIDE_HEIGHT)/2);
+            rawSide[i].set(SIDE_START_POSITION + (i * IMG_SIDE_WIDTH), (ofGetHeight() - IMG_SIDE_HEIGHT)/2);
             
         }
         
@@ -98,11 +106,11 @@ void ofApp::setup(){
         
         
         
-        
-        
+       
     }
     
-    
+    isInitial = true;
+    if(isInitial) setInitialPosition(0, 26 * 3 + 18, 0);
     
     
 //    vid[1].set
@@ -111,39 +119,34 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
-//    if(posX >= 5760) posX = 0;
-//    
-//    for(int i = 0; i < 12; i++){
-//        
-//        if(posXX[i] >= 5760) posXX[i] = 0;
-//        
-//        posXX[i] += 8;
-//        
-//    }
-//
-//    float t = ofClamp(ofGetElapsedTimef() / 1pppppppp0, 0, 1);
-    
-    
-    dt = ofClamp((ofGetElapsedTimef() - nowTime) / 1, 0, 1);
-    
-    
-    float v = ofxEasingFunc::Cubic::easeOut(dt);
-    
-    for (int i = 0; i < 38; i++) {
-    
-        pointTop[i].x =  pointTop[i].x + (v * (rawTop[i].x - pointTop[i].x));
-        pointSide[i].x = pointSide[i].x + (v * (rawSide[i].x - pointSide[i].x));
-        pointDID[i].x = pointDID[i].x + (v * (rawDID[i].x - pointDID[i].x));
-
+ 
+    if(!isInitial){
         
-//        pointTop[i] = rawTop[i];
-//        pointSide[i] = rawSide[i];
-//        pointDID[i] = rawDID[i];
+        dt = ofClamp((ofGetElapsedTimef() - nowTime) / 1, 0, 1);
+        
+        
+        float v = ofxEasingFunc::Linear::easeOut(dt);
+        
+        
+        for (int i = 0; i < 38; i++) {
+            
+            //        pointTop[i].x =  pointTop[i].x + (v * (rawTop[i].x - pointTop[i].x));
+            //        pointSide[i].x = pointSide[i].x + (v * (rawSide[i].x - pointSide[i].x));
+            //        pointDID[i].x = pointDID[i].x + (v * (rawDID[i].x - pointDID[i].x));
+            
+            
+            pointTop[i] = rawTop[i];
+            pointSide[i] = rawSide[i];
+            pointDID[i] = rawDID[i];
+            
+        }
+        
+        strDebug = ofToString(v) + " " + ofToString(ofGetElapsedTimef() - nowTime) + " " + ofToString(nowTime) + " " + ofToString(ofGetElapsedTimef());
         
     }
-
-    strDebug = ofToString(v) + " " + ofToString(ofGetElapsedTimef() - nowTime) + " " + ofToString(nowTime) + " " + ofToString(ofGetElapsedTimef());
+    
+    
+    
     
 }
 
@@ -151,17 +154,15 @@ void ofApp::update(){
 void ofApp::draw(){
     
     
-    
-    ofSetColor(162, 146, 179);
-    ofRect(0, 376.5f, 1920, 273);
-    
-    ofSetColor(0, 123, 139);
-    ofRect(1920, 252, 1920, 576);
-    
-    ofSetColor(243, 190, 199);
+
+    ofSetColor(1, 36, 156);
+    ofRect(0, (float)(1080 - IMG_TOP_HEIGHT) / 2., 1920, IMG_TOP_HEIGHT);
+    ofRect(1920, (float)(1080 - IMG_SIDE_HEIGHT) / 2., 1920, IMG_SIDE_HEIGHT);
     ofRect(3840, 0, 1920, 1080);
 
+
     
+    ofSetColor(255, 255, 255);
     // draw top images with subsection
     
     for(int i = 0; i < 38; i++){
@@ -222,7 +223,16 @@ void ofApp::draw(){
     
     
     
-    ofSetColor(255, 0, 0);
+    
+    
+    
+//    float t = ofClamp(ofGetElapsedTimef() / 20., 0, 1);
+//    float v = ofxEasingFunc::Cubic::easeOut(t);
+//    ofCircle(t * ofGetWidth(), v * ofGetHeight(), 10);
+    
+    
+    
+//    ofSetColor(255, 0, 0);
     ofDrawBitmapString(strDebug, 100, 100);
     
     mClient.draw(50, 50);
@@ -244,6 +254,11 @@ void ofApp::keyPressed(int key){
             
             setPostion(FORWARD);
             
+            break;
+            
+        case 'f':
+            
+            resetPosition();
             break;
             
             
@@ -311,20 +326,20 @@ void ofApp::setPostion(int direction){
                 if (rawTop[i].x >= IMG_TOP_WIDTH * 36) {
                     rawTop[i].x = -(IMG_TOP_WIDTH * 2);
                 }
-                rawTop[i].x = rawTop[i].x + 20;
+                rawTop[i].x = rawTop[i].x + SPEED;
                 
                 
                 if(rawSide[i].x >= SIDE_START_POSITION + (IMG_SIDE_WIDTH * 36)){
                     rawSide[i].x = SIDE_START_POSITION - (IMG_SIDE_WIDTH * 2);
                     
                 }
-                rawSide[i].x = rawSide[i].x + 20;
+                rawSide[i].x = rawSide[i].x + ((float)SPEED * ((float)IMG_SIDE_WIDTH / (float)IMG_TOP_WIDTH));
                 
                 
                 if(rawDID[i].x >= DID_START_POSITION + (IMG_DID_WIDTH * 36)){
                     rawDID[i].x = DID_START_POSITION - (IMG_DID_WIDTH * 2);
                 }
-                rawDID[i].x = rawDID[i].x + 20;
+                rawDID[i].x = rawDID[i].x + ((float)SPEED * ((float)IMG_DID_WIDTH / (float)IMG_TOP_WIDTH));
             }
             
             break;
@@ -335,19 +350,19 @@ void ofApp::setPostion(int direction){
                 if(rawTop[i].x <= -(2 * IMG_TOP_WIDTH)){
                     rawTop[i].x = IMG_TOP_WIDTH * 36;
                 }
-                rawTop[i].x = rawTop[i].x - 20;
+                rawTop[i].x = rawTop[i].x - SPEED;
                 
                 
                 if (rawSide[i].x <= SIDE_START_POSITION - (2 * IMG_SIDE_WIDTH)) {
                     rawSide[i].x = SIDE_START_POSITION + (IMG_SIDE_WIDTH * 36);
                 }
-                rawSide[i].x = rawSide[i].x - 20;
+                rawSide[i].x = rawSide[i].x - ((float)SPEED * ((float)IMG_SIDE_WIDTH / (float)IMG_TOP_WIDTH));
                 
                 
                 if(rawDID[i].x <= DID_START_POSITION - (2 * IMG_DID_WIDTH)){
                     rawDID[i].x = DID_START_POSITION + (IMG_DID_WIDTH * 36);
                 }
-                rawDID[i].x = rawDID[i].x - 20;
+                rawDID[i].x = rawDID[i].x - ((float)SPEED * ((float)IMG_DID_WIDTH / (float)IMG_TOP_WIDTH));
                 
             }
             
@@ -363,16 +378,93 @@ void ofApp::setPostion(int direction){
 
 }
 
+void ofApp::setInitialPosition(int topCount, int sideCount, int didCount){
+    
+    for (int j = 0; j < topCount; j++) {
+        for (int i = 0; i < 38; i++){
+            if(rawTop[i].x <= -(2 * IMG_TOP_WIDTH)){
+                rawTop[i].x = IMG_TOP_WIDTH * 36;
+            }
+            rawTop[i].x = rawTop[i].x - SPEED;
+            
+            pointTop[i] = rawDID[i];
+            
+        }
+        
+    }
+    
+    for (int j = 0; j < sideCount; j++) {
+        for (int i = 0; i < 38; i++){
+            
+            if (rawSide[i].x <= SIDE_START_POSITION - (2 * IMG_SIDE_WIDTH)) {
+                rawSide[i].x = SIDE_START_POSITION + (IMG_SIDE_WIDTH * 36);
+            }
+            rawSide[i].x = rawSide[i].x - ((float)SPEED * ((float)IMG_SIDE_WIDTH / (float)IMG_TOP_WIDTH));
+            
+            pointSide[i] = rawSide[i];
+            
+            
+        }
+    }
+    
+    
+    
+    for (int j = 0; j < didCount; j++) {
+        for (int i = 0; i < 38; i++){
+            
+            
+            if(rawDID[i].x <= DID_START_POSITION - (2 * IMG_DID_WIDTH)){
+                rawDID[i].x = DID_START_POSITION + (IMG_DID_WIDTH * 36);
+            }
+            rawDID[i].x = rawDID[i].x - ((float)SPEED * ((float)IMG_DID_WIDTH / (float)IMG_TOP_WIDTH));
+            
+            
+            pointDID[i] = rawDID[i];
+        }
+    }
+    
+
+    isInitial = false;
+}
+
 void ofApp::resetPosition(){
+    
+    // OUT OF DATE
+    // DO NOT USE
     
     for(int i = 0; i < 38; i++){
         
-        pointDID[i].set(3840 + (i * 1920), 0);
+        if (i == 37) {
+            pointDID[i].set(DID_START_POSITION - IMG_DID_WIDTH, 0);
+            rawDID[i].set(DID_START_POSITION - IMG_DID_WIDTH, 0);
+            
+            pointTop[i].set(0 - IMG_TOP_WIDTH, (ofGetHeight() - IMG_TOP_HEIGHT)/2);
+            rawTop[i].set(0 - IMG_TOP_WIDTH, (ofGetHeight() - IMG_TOP_HEIGHT)/2);
+            
+            pointSide[i].set(SIDE_START_POSITION - IMG_SIDE_WIDTH, (ofGetHeight() - IMG_SIDE_HEIGHT)/2);
+            rawSide[i].set(SIDE_START_POSITION - IMG_SIDE_WIDTH, (ofGetHeight() - IMG_SIDE_HEIGHT)/2);
+            
+        }else{
+            pointDID[i].set(DID_START_POSITION + (i * IMG_DID_WIDTH), 0);
+            rawDID[i].set(DID_START_POSITION + (i * IMG_DID_WIDTH), 0);
+            
+            pointTop[i].set(i * IMG_TOP_WIDTH, (ofGetHeight() - IMG_TOP_HEIGHT)/2);
+            rawTop[i].set(i * IMG_TOP_WIDTH, (ofGetHeight() - IMG_TOP_HEIGHT)/2);
+            
+            pointSide[i].set(SIDE_START_POSITION + (i * IMG_SIDE_WIDTH), (ofGetHeight() - IMG_SIDE_HEIGHT)/2);
+            rawSide[i].set(SIDE_START_POSITION + (i * IMG_SIDE_WIDTH), (ofGetHeight() - IMG_SIDE_HEIGHT)/2);
+            
+        }
+        
         pointDID[i].z = 10;
-        pointTop[i].set(i * 520, 400);
+        rawDID[i].z = 10;
+        
         pointTop[i].z = 0;
-        pointSide[i].set(1920 + (i * 400), 325);
+        rawTop[i].z = 0;
+        
         pointSide[i].z = 20;
+        rawSide[i].z = 20;
+        
         
     }
 }

@@ -26,6 +26,7 @@ class ofApp : public ofBaseApp{
     
     void setPostion(int direction);
     void resetPosition();
+    void setInitialPosition(int topCount, int sideCount, int didCount);
     
     ofxSyphonServer mainOutputSyphonServer;
     ofxSyphonServer individualTextureSyphonServer;
@@ -36,6 +37,7 @@ class ofApp : public ofBaseApp{
     
 //    int posXX[12];
     
+    bool isInitial;
     
     
     ofImage imgTop[38];
@@ -51,6 +53,8 @@ class ofApp : public ofBaseApp{
     ofPoint rawDID[38];
     
 
+    ofImage imgg;
+    
     string strDebug;
     float dt;
     float nowTime;

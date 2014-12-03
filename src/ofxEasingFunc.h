@@ -114,7 +114,7 @@ struct Cubic
 {
 	inline static float easeIn(const float t)
 	{
-		return t * t * t;
+		return t * t * t * t * t;
 	}
 
 	inline static float easeOut(const float t)

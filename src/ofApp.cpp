@@ -109,11 +109,63 @@ void ofApp::setup(){
        
     }
     
+    
+    // set video poistion
+    // x, y : position in 1920 1080 screen
+    // z : sequence number (use for multiplying x position)
+    pointVideoData[0].x = 100;
+    pointVideoData[0].y = 100;
+    pointVideoData[0].z = 9;
+    
+    pointVideoData[1].x = 100;
+    pointVideoData[1].y = 100;
+    pointVideoData[1].z = 12;
+    
+    
+    pointVideoData[2].x = 100;
+    pointVideoData[2].y = 100;
+    pointVideoData[2].z = 13;
+    
+    
+    pointVideoData[3].x = 100;
+    pointVideoData[3].y = 100;
+    pointVideoData[3].z = 15;
+    
+    
+    pointVideoData[4].x = 100;
+    pointVideoData[4].y = 100;
+    pointVideoData[4].z = 17;
+    
+    
+    vid[0].loadMovie("video/199401.mp4");
+    vid[1].loadMovie("video/201309.mp4");
+    vid[2].loadMovie("video/201303.mp4");
+    vid[3].loadMovie("video/199401.mp4");
+    vid[4].loadMovie("video/201309.mp4");
+    
+    
+    
+    
+    
+    for(int i =0; i < videoCount; i++){
+        
+        pointVideo[i].x = DID_START_POSITION + pointVideoData[i].x + (pointVideoData[i].z * 1920);
+        pointVideo[i].y = pointVideoData[i].y;
+        
+    }
+    
+    
+    /*
+     
+     set initial position of images
+     
+     */
     isInitial = true;
     if(isInitial) setInitialPosition(0, 26 * 3 + 18, 26 * 7 + 4);
     
+
     
-//    vid[1].set
+    
     
 }
 
@@ -145,9 +197,36 @@ void ofApp::update(){
         
     }
     
+//    if(!vid[1].isPlaying()){
+//        vid[1].play();
+//    }
+//    
+//    vid[1].update();
+//
     
     
-    
+    for(int i = 0; i < videoCount; i++){
+        
+        if(pointVideo[i].x >= DID_START_POSITION && pointVideo[i].x <= DID_END_POSITION){
+            
+            if (!vid[i].isPlaying()) {
+                vid[i].play();
+            }
+            vid[i].update();
+            
+            
+        }else{
+            
+            if (vid[i].isPlaying()) {
+                vid[i].stop();
+                vid[i].firstFrame();
+            }
+            
+        }
+        
+        
+        
+    }
 }
 
 //--------------------------------------------------------------
@@ -222,13 +301,28 @@ void ofApp::draw(){
     }
     
     
-    
+    for(int i = 0; i < videoCount; i++){
+        
+        if(pointVideo[i].x >= DID_START_POSITION && pointVideo[i].x <= DID_END_POSITION){
+            
+         
+            vid[i].draw(pointVideo[i].x, pointVideo[i].y);
+            
+            
+        }
+        
+        
+    }
     
     
     
 //    float t = ofClamp(ofGetElapsedTimef() / 20., 0, 1);
 //    float v = ofxEasingFunc::Cubic::easeOut(t);
 //    ofCircle(t * ofGetWidth(), v * ofGetHeight(), 10);
+    
+    
+//    vid[1].draw(100, 100);
+    
     
     
     
@@ -259,6 +353,9 @@ void ofApp::keyPressed(int key){
         case 'f':
             
             resetPosition();
+            
+           
+            
             break;
             
             
@@ -340,6 +437,19 @@ void ofApp::setPostion(int direction){
                     rawDID[i].x = DID_START_POSITION - (IMG_DID_WIDTH * 2);
                 }
                 rawDID[i].x = rawDID[i].x + ((float)SPEED * ((float)IMG_DID_WIDTH / (float)IMG_TOP_WIDTH));
+                
+
+            }
+            
+            for (int i = 0; i < videoCount; i++){
+            
+                if(pointVideo[i].x >= DID_START_POSITION + (IMG_DID_WIDTH * 36)){
+                    
+                    pointVideo[i].x = DID_START_POSITION - (IMG_DID_WIDTH * 2) + pointVideoData[i].x;
+                    
+                }
+                pointVideo[i].x = pointVideo[i].x + ((float)SPEED * ((float)IMG_DID_WIDTH / (float)IMG_TOP_WIDTH));
+            
             }
             
             break;
@@ -364,6 +474,14 @@ void ofApp::setPostion(int direction){
                 }
                 rawDID[i].x = rawDID[i].x - ((float)SPEED * ((float)IMG_DID_WIDTH / (float)IMG_TOP_WIDTH));
                 
+            }
+            
+            
+            for (int i = 0; i < videoCount; i++) {
+                if(pointVideo[i].x <= DID_START_POSITION - (2 * IMG_DID_WIDTH)){
+                    pointVideo[i].x = DID_START_POSITION + (IMG_DID_WIDTH * 36) + pointVideoData[i].x;
+                }
+                pointVideo[i].x = pointVideo[i].x + ((float)SPEED * ((float)IMG_DID_WIDTH / (float)IMG_TOP_WIDTH));
             }
             
             break;

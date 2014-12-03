@@ -49,18 +49,23 @@ class ofApp : public ofBaseApp{
     ofPoint pointSide[38];
     ofPoint pointDID[38];
     
+    
     ofPoint rawTop[38];
     ofPoint rawSide[38];
     ofPoint rawDID[38];
     
-
+    
+    
     ofImage imgg;
     
     string strDebug;
     float dt;
     float nowTime;
 
+    int videoCount = 5;
     ofVideoPlayer vid[5];
+    ofPoint pointVideo[5];
+    ofPoint pointVideoData[5];
 
 
 };

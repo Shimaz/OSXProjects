@@ -20,9 +20,10 @@
 #define DID_START_POSITION 3840
 #define DID_END_POSITION 5760
 
-#define SPEED 20
+#define INITIAL_SPEED 20
 
-
+#define SCREEN_SAVER_SPEED 0.5f
+#define SCREEN_SAVER_ON_TIME 10
 
 
 //--------------------------------------------------------------
@@ -43,6 +44,7 @@ void ofApp::setup(){
     mClient.setServerName("");
     posX = 0;
     
+    SPEED = INITIAL_SPEED;
 //    
 //    for(int i = 0; i < 12; i++){
 //
@@ -147,12 +149,6 @@ void ofApp::setup(){
     
     
     
-    for(int i =0; i < videoCount; i++){
-        
-        pointVideo[i].x = DID_START_POSITION + pointVideoData[i].x + (pointVideoData[i].z * 1920);
-        pointVideo[i].y = pointVideoData[i].y;
-        
-    }
     
     
     /*
@@ -163,8 +159,17 @@ void ofApp::setup(){
     isInitial = true;
     if(isInitial) setInitialPosition(0, 26 * 3 + 18, 26 * 7 + 4);
     
-
+    for(int i =0; i < videoCount; i++){
+        
+        pointVideo[i].x = pointDID[(int)pointVideoData[i].z].x + pointVideoData[i].x;
+        pointVideo[i].y = pointVideoData[i].y;
+        
+    }
     
+    nowTime = ofGetElapsedTimef();
+    
+    
+    rdeg = rx = ry = rz = 0;
     
     
 }
@@ -193,8 +198,9 @@ void ofApp::update(){
             
         }
         
-        strDebug = ofToString(v) + " " + ofToString(ofGetElapsedTimef() - nowTime) + " " + ofToString(nowTime) + " " + ofToString(ofGetElapsedTimef());
+//        strDebug = ofToString(v) + " " + ofToString(ofGetElapsedTimef() - nowTime) + " " + ofToString(nowTime) + " " + ofToString(ofGetElapsedTimef());
         
+//        strDebug = ofToString(pointVideo[0].x) + " " + ofToString(pointDID[9].x);
     }
     
 //    if(!vid[1].isPlaying()){
@@ -224,9 +230,30 @@ void ofApp::update(){
             
         }
         
-        
+
         
     }
+    
+    dTime = (int)(ofGetElapsedTimef() - nowTime);
+    
+    
+    
+    if (dTime > SCREEN_SAVER_ON_TIME) {
+        updatePositionScreenSaver();
+        isScreenSaverOn = true;
+        pastFrameCount++;
+//        SPEED = pastFrameCount % 20;
+        SPEED = INITIAL_SPEED;
+    }else{
+        isScreenSaverOn = false;
+        SPEED = INITIAL_SPEED;
+    }
+    
+    
+    strDebug = "dTime:" + ofToString(dTime) + " nowTime:" + ofToString(nowTime) + " SPEED:" + ofToString(SPEED);
+    
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -301,18 +328,27 @@ void ofApp::draw(){
     }
     
     
+    
+    
     for(int i = 0; i < videoCount; i++){
         
         if(pointVideo[i].x >= DID_START_POSITION && pointVideo[i].x <= DID_END_POSITION){
+           
             
-         
+            
+
+            
             vid[i].draw(pointVideo[i].x, pointVideo[i].y);
+            
             
             
         }
         
         
     }
+    
+    
+    
     
     
     
@@ -338,18 +374,22 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
 
     switch (key) {
+        case 'O':
         case 'o':
             
             setPostion(BACKWARD);
             
             break;
             
+        case 'P':
         case 'p':
             
             setPostion(FORWARD);
             
             break;
             
+            
+        case 'F':
         case 'f':
             
             resetPosition();
@@ -359,11 +399,50 @@ void ofApp::keyPressed(int key){
             break;
             
             
+        case 'a':
+            rdeg = rdeg - 5;
+            break;
+            
+            
+        case 's':
+            rdeg = rdeg + 5;
+            break;
+            
+            
+        case 'z':
+            rx = rx - 0.5f;
+            break;
+            
+        case 'x':
+            rx = rx + 0.5f;
+            break;
+            
+            
+        case 'c':
+            ry = ry - 0.5f;
+            break;
+            
+        case 'v':
+            ry = ry + 0.5f;
+            break;
+            
+            
+        case 'q':
+            rz = rz - 0.5f;
+            break;
+            
+            
+        case 'w':
+            rz = rz + 0.5f;
+            
+            
             
         default:
             break;
     }
     
+    nowTime = ofGetElapsedTimef();
+//    strDebug = "deg: " + ofToString(rdeg) + " x:" + ofToString(rx) + " y:" + ofToString(ry) + " z:" + ofToString(rz);
 }
 
 //--------------------------------------------------------------
@@ -443,13 +522,7 @@ void ofApp::setPostion(int direction){
             
             for (int i = 0; i < videoCount; i++){
             
-                if(pointVideo[i].x >= DID_START_POSITION + (IMG_DID_WIDTH * 36)){
-                    
-                    pointVideo[i].x = DID_START_POSITION - (IMG_DID_WIDTH * 2) + pointVideoData[i].x;
-                    
-                }
-                pointVideo[i].x = pointVideo[i].x + ((float)SPEED * ((float)IMG_DID_WIDTH / (float)IMG_TOP_WIDTH));
-            
+                pointVideo[i].x = rawDID[(int)pointVideoData[i].z].x + pointVideoData[i].x;
             }
             
             break;
@@ -478,10 +551,8 @@ void ofApp::setPostion(int direction){
             
             
             for (int i = 0; i < videoCount; i++) {
-                if(pointVideo[i].x <= DID_START_POSITION - (2 * IMG_DID_WIDTH)){
-                    pointVideo[i].x = DID_START_POSITION + (IMG_DID_WIDTH * 36) + pointVideoData[i].x;
-                }
-                pointVideo[i].x = pointVideo[i].x + ((float)SPEED * ((float)IMG_DID_WIDTH / (float)IMG_TOP_WIDTH));
+
+                pointVideo[i].x = rawDID[(int)pointVideoData[i].z].x + pointVideoData[i].x;
             }
             
             break;
@@ -495,6 +566,38 @@ void ofApp::setPostion(int direction){
 //    }
 
 }
+
+
+
+void ofApp::updatePositionScreenSaver(){
+    for (int i = 0; i < 38; i++){
+        if(rawTop[i].x <= -(2 * IMG_TOP_WIDTH)){
+            rawTop[i].x = IMG_TOP_WIDTH * 36;
+        }
+        rawTop[i].x = rawTop[i].x - SCREEN_SAVER_SPEED;
+        
+        
+        if (rawSide[i].x <= SIDE_START_POSITION - (2 * IMG_SIDE_WIDTH)) {
+            rawSide[i].x = SIDE_START_POSITION + (IMG_SIDE_WIDTH * 36);
+        }
+        rawSide[i].x = rawSide[i].x - ((float)SCREEN_SAVER_SPEED * ((float)IMG_SIDE_WIDTH / (float)IMG_TOP_WIDTH));
+        
+        
+        if(rawDID[i].x <= DID_START_POSITION - (2 * IMG_DID_WIDTH)){
+            rawDID[i].x = DID_START_POSITION + (IMG_DID_WIDTH * 36);
+        }
+        rawDID[i].x = rawDID[i].x - ((float)SCREEN_SAVER_SPEED * ((float)IMG_DID_WIDTH / (float)IMG_TOP_WIDTH));
+        
+    }
+    
+    
+    for (int i = 0; i < videoCount; i++) {
+        
+        pointVideo[i].x = rawDID[(int)pointVideoData[i].z].x + pointVideoData[i].x;
+    }
+
+}
+
 
 void ofApp::setInitialPosition(int topCount, int sideCount, int didCount){
     

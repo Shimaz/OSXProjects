@@ -28,12 +28,16 @@ class ofApp : public ofBaseApp{
     void resetPosition();
     void setInitialPosition(int topCount, int sideCount, int didCount);
     
+    void updatePositionScreenSaver();
+    
     ofxSyphonServer mainOutputSyphonServer;
     ofxSyphonServer individualTextureSyphonServer;
     ofxSyphonClient mClient;
     
     
     int posX;
+    int SPEED ;
+    
     
 //    int posXX[12];
     
@@ -61,11 +65,19 @@ class ofApp : public ofBaseApp{
     string strDebug;
     float dt;
     float nowTime;
-
+    int pastFrameCount = 0;
+    bool isScreenSaverOn = false;
+    int dTime;
+    
     int videoCount = 5;
     ofVideoPlayer vid[5];
     ofPoint pointVideo[5];
     ofPoint pointVideoData[5];
 
 
+    float rdeg;
+    float rx;
+    float ry;
+    float rz;
+    
 };

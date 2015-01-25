@@ -28,7 +28,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-//    ofSetBackgroundColor(0, 255, 0);
+    //    ofSetBackgroundColor(0, 255, 0);
     
     ofSetFrameRate(60);
     
@@ -44,6 +44,7 @@ void ofApp::setup(){
     mClient.setServerName("");
     posX = 0;
     
+<<<<<<< Updated upstream
     SPEED = INITIAL_SPEED;
 //    
 //    for(int i = 0; i < 12; i++){
@@ -52,11 +53,20 @@ void ofApp::setup(){
 //        posXX[i] = i * 400;
 //    
 //    }
+=======
+    //
+    //    for(int i = 0; i < 12; i++){
+    //
+    //
+    //        posXX[i] = i * 400;
+    //
+    //    }
+>>>>>>> Stashed changes
     
     
     for(int i = 0; i < 38; i++){
         
-    
+        
         // Load Images
         string str = "top/" + ofToString(i+1) + ".png";
         
@@ -69,17 +79,23 @@ void ofApp::setup(){
         
         string str3 = "did/DID_eng_" + ofToString(i + 1) + ".png";
         imgDID[i].loadImage(str3);
-                            
-    
+        
+        
         
         // Set Initial Positions
         
         if (i == 37) {
             pointDID[i].set(DID_START_POSITION - IMG_DID_WIDTH, 0);
             rawDID[i].set(DID_START_POSITION - IMG_DID_WIDTH, 0);
+<<<<<<< Updated upstream
         
             pointTop[i].set(0 - IMG_TOP_WIDTH, (ofGetHeight() - IMG_TOP_HEIGHT)/2);
             rawTop[i].set(0 - IMG_TOP_WIDTH, (ofGetHeight() - IMG_TOP_HEIGHT)/2);
+=======
+            
+            pointTop[i].set(0 - IMG_TOP_WIDTH, 400);
+            rawTop[i].set(0 - IMG_TOP_WIDTH, 400);
+>>>>>>> Stashed changes
             
             pointSide[i].set(SIDE_START_POSITION - IMG_SIDE_WIDTH, (ofGetHeight() - IMG_SIDE_HEIGHT)/2);
             rawSide[i].set(SIDE_START_POSITION - IMG_SIDE_WIDTH, (ofGetHeight() - IMG_SIDE_HEIGHT)/2);
@@ -171,6 +187,10 @@ void ofApp::setup(){
     
     rdeg = rx = ry = rz = 0;
     
+<<<<<<< Updated upstream
+=======
+    //    vid[1].set
+>>>>>>> Stashed changes
     
 }
 
@@ -203,12 +223,26 @@ void ofApp::update(){
 //        strDebug = ofToString(pointVideo[0].x) + " " + ofToString(pointDID[9].x);
     }
     
+<<<<<<< Updated upstream
 //    if(!vid[1].isPlaying()){
 //        vid[1].play();
 //    }
 //    
 //    vid[1].update();
 //
+=======
+    //    if(posX >= 5760) posX = 0;
+    //
+    //    for(int i = 0; i < 12; i++){
+    //
+    //        if(posXX[i] >= 5760) posXX[i] = 0;
+    //
+    //        posXX[i] += 8;
+    //
+    //    }
+    //
+    //    float t = ofClamp(ofGetElapsedTimef() / 1pppppppp0, 0, 1);
+>>>>>>> Stashed changes
     
     
     for(int i = 0; i < videoCount; i++){
@@ -237,6 +271,7 @@ void ofApp::update(){
     dTime = (int)(ofGetElapsedTimef() - nowTime);
     
     
+<<<<<<< Updated upstream
     
     if (dTime > SCREEN_SAVER_ON_TIME) {
         updatePositionScreenSaver();
@@ -253,6 +288,22 @@ void ofApp::update(){
     strDebug = "dTime:" + ofToString(dTime) + " nowTime:" + ofToString(nowTime) + " SPEED:" + ofToString(SPEED);
     
     
+=======
+    for (int i = 0; i < 38; i++) {
+        
+        pointTop[i].x =  pointTop[i].x + (v * (rawTop[i].x - pointTop[i].x));
+        pointSide[i].x = pointSide[i].x + (v * (rawSide[i].x - pointSide[i].x));
+        pointDID[i].x = pointDID[i].x + (v * (rawDID[i].x - pointDID[i].x));
+        
+        
+        //        pointTop[i] = rawTop[i];
+        //        pointSide[i] = rawSide[i];
+        //        pointDID[i] = rawDID[i];
+        
+    }
+    
+    strDebug = ofToString(v) + " " + ofToString(ofGetElapsedTimef() - nowTime) + " " + ofToString(nowTime) + " " + ofToString(ofGetElapsedTimef());
+>>>>>>> Stashed changes
     
 }
 
@@ -265,15 +316,19 @@ void ofApp::draw(){
     ofRect(0, (float)(1080 - IMG_TOP_HEIGHT) / 2., 1920, IMG_TOP_HEIGHT);
     ofRect(1920, (float)(1080 - IMG_SIDE_HEIGHT) / 2., 1920, IMG_SIDE_HEIGHT);
     ofRect(3840, 0, 1920, 1080);
+<<<<<<< Updated upstream
 
 
+=======
+    
+>>>>>>> Stashed changes
     
     ofSetColor(255, 255, 255);
     // draw top images with subsection
     
     for(int i = 0; i < 38; i++){
         if(pointTop[i].x >= -IMG_TOP_WIDTH && pointTop[i].x <= 1920 - IMG_TOP_WIDTH){
-        
+            
             
             imgTop[i].draw(pointTop[i]);
         }
@@ -290,24 +345,24 @@ void ofApp::draw(){
     // draw side images width subsection
     
     for (int i = 0; i < 38; i++){
-     
-        if(pointSide[i].x >= SIDE_START_POSITION - IMG_SIDE_WIDTH && pointSide[i].x < SIDE_START_POSITION){ // cliping left side
         
+        if(pointSide[i].x >= SIDE_START_POSITION - IMG_SIDE_WIDTH && pointSide[i].x < SIDE_START_POSITION){ // cliping left side
+            
             imgSide[i].drawSubsection(SIDE_START_POSITION, pointSide[i].y,
                                       IMG_SIDE_WIDTH - (SIDE_START_POSITION - pointSide[i].x), IMG_SIDE_HEIGHT,
                                       (SIDE_START_POSITION - pointSide[i].x), 0);
             
         }else if(pointSide[i].x >= SIDE_START_POSITION && pointSide[i].x <= SIDE_END_POSITION - IMG_SIDE_WIDTH){
-        
+            
             imgSide[i].draw(pointSide[i]);
-        
+            
         }
         else if(pointSide[i].x <= SIDE_END_POSITION && pointSide[i].x > SIDE_END_POSITION - IMG_SIDE_WIDTH){ // cliping right side
             
             imgSide[i].drawSubsection(pointSide[i].x, pointSide[i].y, SIDE_END_POSITION - pointSide[i].x, IMG_SIDE_HEIGHT, 0, 0);
             
         }
-     
+        
     }
     
     
@@ -320,16 +375,17 @@ void ofApp::draw(){
                                      (DID_START_POSITION - pointDID[i].x), 0);
             
         }else if(pointDID[i].x >= DID_START_POSITION && pointDID[i].x <= DID_END_POSITION){
-        
+            
             imgDID[i].draw(pointDID[i]);
         }
-     
+        
         
     }
     
     
     
     
+<<<<<<< Updated upstream
     for(int i = 0; i < videoCount; i++){
         
         if(pointVideo[i].x >= DID_START_POSITION && pointVideo[i].x <= DID_END_POSITION){
@@ -363,16 +419,20 @@ void ofApp::draw(){
     
     
 //    ofSetColor(255, 0, 0);
+=======
+    
+    ofSetColor(255, 0, 0);
+>>>>>>> Stashed changes
     ofDrawBitmapString(strDebug, 100, 100);
     
     mClient.draw(50, 50);
     mainOutputSyphonServer.publishScreen();
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    
     switch (key) {
         case 'O':
         case 'o':
@@ -447,42 +507,42 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::gotMessage(ofMessage msg){
-
+    
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
+void ofApp::dragEvent(ofDragInfo dragInfo){
+    
 }
 
 
@@ -497,7 +557,7 @@ void ofApp::setPostion(int direction){
         case FORWARD:
             
             for (int i = 0; i < 38; i++){
-            
+                
                 
                 if (rawTop[i].x >= IMG_TOP_WIDTH * 36) {
                     rawTop[i].x = -(IMG_TOP_WIDTH * 2);
@@ -561,10 +621,10 @@ void ofApp::setPostion(int direction){
             break;
     }
     
-//    if (pointTop[0].x == 0) {
-//        resetPosition();
-//    }
-
+    //    if (pointTop[0].x == 0) {
+    //        resetPosition();
+    //    }
+    
 }
 
 
